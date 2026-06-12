@@ -1,0 +1,14 @@
+{
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?<slug>[^.]+)\\.lyra\\.app"
+        }
+      ],
+      "destination": "/:slug/:path*"
+    }
+  ]
+}

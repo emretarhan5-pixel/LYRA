@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+:root {
+  --site-accent: #6366f1;
+}
+
+html {
+  scroll-behavior: smooth;
+}

@@ -8,6 +8,10 @@ import {
   IconChartBar,
   IconSettings,
   IconExternalLink,
+  IconDental,
+  IconBrain,
+  IconStethoscope,
+  IconSalad,
 } from "@tabler/icons-react";
 import {
   DropdownMenu,
@@ -20,11 +24,11 @@ import { getSiteHostname, getSiteUrl } from "@/lib/utils/siteUrl";
 import { timeAgo } from "@/lib/utils/timeAgo";
 import type { Site, TemplateId } from "@/lib/types";
 
-const previewBg: Record<TemplateId, string> = {
-  dental: "#f0f9ff",
-  psychologist: "#faf5ff",
-  clinic: "#f0fdf4",
-  dietitian: "#fffbeb",
+const previewGradient: Record<TemplateId, string> = {
+  dental: "linear-gradient(135deg, #f0f9ff, #e0f2fe)",
+  psychologist: "linear-gradient(135deg, #faf5ff, #ede9fe)",
+  clinic: "linear-gradient(135deg, #f0fdf4, #dcfce7)",
+  dietitian: "linear-gradient(135deg, #fffbeb, #fef3c7)",
 };
 
 const templateAccent: Record<TemplateId, string> = {
@@ -34,124 +38,28 @@ const templateAccent: Record<TemplateId, string> = {
   dietitian: "#f59e0b",
 };
 
-function MiniSitePreview({ accentColor }: { accentColor: string }) {
+const templateIcons: Record<
+  TemplateId,
+  React.ComponentType<{ size?: number; style?: React.CSSProperties; stroke?: number }>
+> = {
+  dental: IconDental,
+  psychologist: IconBrain,
+  clinic: IconStethoscope,
+  dietitian: IconSalad,
+};
+
+function MockBrowserBar() {
   return (
     <div
-      className="pointer-events-none absolute left-0 right-0 top-0"
-      style={{
-        transform: "scale(0.55)",
-        transformOrigin: "top left",
-        width: "calc(100% / 0.55)",
-        background: "white",
-        borderRadius: 8,
-        padding: "16px 20px",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-      }}
+      className="pointer-events-none absolute left-3 top-3 flex items-center gap-2"
+      style={{ zIndex: 1 }}
     >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 16,
-          paddingBottom: 10,
-          borderBottom: "1px solid #f0f0f0",
-        }}
-      >
-        <div
-          style={{
-            width: 60,
-            height: 8,
-            background: accentColor,
-            borderRadius: 4,
-            opacity: 0.8,
-          }}
-        />
-        <div
-          style={{
-            width: 48,
-            height: 22,
-            background: accentColor,
-            borderRadius: 5,
-            opacity: 0.9,
-          }}
-        />
+      <div className="flex items-center gap-1">
+        <span className="h-1.5 w-1.5 rounded-full bg-[#ef4444]" />
+        <span className="h-1.5 w-1.5 rounded-full bg-[#f59e0b]" />
+        <span className="h-1.5 w-1.5 rounded-full bg-[#22c55e]" />
       </div>
-
-      <div style={{ marginBottom: 12 }}>
-        <div
-          style={{
-            width: "75%",
-            height: 10,
-            background: "#0f172a",
-            borderRadius: 3,
-            marginBottom: 6,
-            opacity: 0.85,
-          }}
-        />
-        <div
-          style={{
-            width: "55%",
-            height: 10,
-            background: "#0f172a",
-            borderRadius: 3,
-            marginBottom: 10,
-            opacity: 0.85,
-          }}
-        />
-        <div
-          style={{
-            width: "90%",
-            height: 6,
-            background: "#94a3b8",
-            borderRadius: 2,
-            marginBottom: 4,
-          }}
-        />
-        <div
-          style={{
-            width: "70%",
-            height: 6,
-            background: "#94a3b8",
-            borderRadius: 2,
-            marginBottom: 14,
-          }}
-        />
-        <div style={{ display: "flex", gap: 8 }}>
-          <div
-            style={{
-              width: 64,
-              height: 20,
-              background: accentColor,
-              borderRadius: 5,
-            }}
-          />
-          <div
-            style={{
-              width: 52,
-              height: 20,
-              background: "transparent",
-              border: `1.5px solid ${accentColor}`,
-              borderRadius: 5,
-            }}
-          />
-        </div>
-      </div>
-
-      <div style={{ display: "flex", gap: 6 }}>
-        {[1, 2, 3].map((i) => (
-          <div
-            key={i}
-            style={{
-              flex: 1,
-              height: 36,
-              background: "#f8fafc",
-              borderRadius: 5,
-              border: "1px solid #f0f0f0",
-            }}
-          />
-        ))}
-      </div>
+      <div className="h-1.5 w-20 rounded-sm bg-[#e2e8f0]" />
     </div>
   );
 }
@@ -161,17 +69,28 @@ interface SiteCardProps {
 }
 
 export function SiteCard({ site }: SiteCardProps) {
-  const bgColor = previewBg[site.template_id] ?? "#f8fafc";
+  const gradient =
+    previewGradient[site.template_id] ??
+    "linear-gradient(135deg, #f8fafc, #f1f5f9)";
   const accentColor = templateAccent[site.template_id] ?? "#6366f1";
+  const TemplateIcon = templateIcons[site.template_id] ?? IconStethoscope;
   const basePath = `/sites/${site.id}`;
 
   return (
     <div className="overflow-hidden rounded-xl border border-[#f0f0f0] bg-white transition-all duration-150 hover:border-[#e2e8f0] hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)]">
       <div
-        className="relative h-[160px] overflow-hidden"
-        style={{ backgroundColor: bgColor }}
+        className="relative h-[140px] overflow-hidden"
+        style={{ background: gradient }}
       >
-        <MiniSitePreview accentColor={accentColor} />
+        <MockBrowserBar />
+
+        <div className="pointer-events-none absolute bottom-3 right-4">
+          <TemplateIcon
+            size={36}
+            stroke={1.5}
+            style={{ color: accentColor, opacity: 0.4 }}
+          />
+        </div>
 
         <div className="absolute left-3 top-3 z-10">
           <DropdownMenu>

@@ -2,23 +2,35 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { signIn } from "@/app/actions/auth";
+import { signUp } from "@/app/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function LoginForm() {
+export function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true);
     setError(null);
 
-    const result = await signIn(email, password);
+    if (password.length < 6) {
+      setError("Şifre en az 6 karakter olmalıdır");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Şifreler eşleşmiyor");
+      return;
+    }
+
+    setLoading(true);
+
+    const result = await signUp(email, password);
 
     if (result?.error) {
       setError(result.error);
@@ -33,7 +45,7 @@ export function LoginForm() {
       </div>
 
       <h2 className="mb-6 text-center text-lg font-medium text-lyra-text-primary">
-        Hesabınıza giriş yapın
+        Yeni hesap oluşturun
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -59,10 +71,27 @@ export function LoginForm() {
           <Input
             id="password"
             type="password"
-            placeholder="••••••••"
+            placeholder="En az 6 karakter"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            minLength={6}
+            className="border-zinc-700 bg-lyra-bg text-lyra-text-primary placeholder:text-lyra-text-muted"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="confirmPassword" className="text-lyra-text-secondary">
+            Şifre tekrar
+          </Label>
+          <Input
+            id="confirmPassword"
+            type="password"
+            placeholder="Şifrenizi tekrar girin"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            minLength={6}
             className="border-zinc-700 bg-lyra-bg text-lyra-text-primary placeholder:text-lyra-text-muted"
           />
         </div>
@@ -70,17 +99,17 @@ export function LoginForm() {
         {error && <p className="text-sm text-red-400">{error}</p>}
 
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
+          {loading ? "Kayıt olunuyor..." : "Kayıt Ol"}
         </Button>
       </form>
 
       <p className="mt-6 text-center text-sm text-lyra-text-secondary">
-        Hesabınız yok mu?{" "}
+        Zaten hesabınız var mı?{" "}
         <Link
-          href="/auth/register"
+          href="/auth/login"
           className="text-lyra-accent transition-colors hover:text-indigo-400"
         >
-          Kayıt olun
+          Giriş yapın
         </Link>
       </p>
     </div>

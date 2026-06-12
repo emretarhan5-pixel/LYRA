@@ -23,7 +23,8 @@ export interface EditorServiceItem {
   _id: string;
   name: string;
   description: string;
-  price?: string;
+  price?: string | null;
+  icon?: string;
 }
 
 export interface EditorTestimonialItem {
@@ -57,7 +58,8 @@ export function siteContentToEditor(content: SiteContent): EditorContent {
         _id: crypto.randomUUID(),
         name: item.name,
         description: item.description,
-        price: item.price,
+        price: item.price ?? undefined,
+        icon: item.icon,
       })),
     },
     testimonials: {
@@ -75,7 +77,8 @@ function stripServiceId(item: EditorServiceItem) {
   return {
     name: item.name,
     description: item.description,
-    price: item.price,
+    price: item.price ?? undefined,
+    icon: item.icon,
   };
 }
 

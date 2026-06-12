@@ -49,6 +49,7 @@ const config: Config = {
       },
       padding: {
         "hero-top": "120px",
+        "section-y": "72px",
       },
       borderColor: {
         "sidebar-border": "rgba(255,255,255,0.06)",

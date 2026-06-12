@@ -6,6 +6,7 @@ export interface SiteContent {
     subheadline: string;
     ctaText: string;
     ctaPhone: string;
+    heroImageUrl?: string;
   };
   about: {
     title: string;
@@ -14,7 +15,12 @@ export interface SiteContent {
   };
   services: {
     title: string;
-    items: { name: string; description: string; price?: string }[];
+    items: {
+      name: string;
+      description: string;
+      price?: string | null;
+      icon?: string;
+    }[];
   };
   contact: {
     phone: string;
@@ -67,37 +73,45 @@ const dentalContent: SiteContent = {
       "Modern teknoloji ve uzman kadromuzla ağız ve diş sağlığınız için kapsamlı tedavi hizmetleri sunuyoruz.",
     ctaText: "Randevu Al",
     ctaPhone: "0312 000 00 00",
+    heroImageUrl:
+      "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&q=80",
   },
   about: {
     title: "Hakkımızda",
     body: "Kliniğimizde hasta memnuniyetini ön planda tutarak, kişiye özel tedavi planları oluşturuyoruz. Deneyimli diş hekimlerimiz ve steril ortamımızla güvenli bir tedavi süreci sunuyoruz.",
-    photoUrl: null,
+    photoUrl:
+      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80",
   },
   services: {
     title: "Hizmetlerimiz",
     items: [
       {
         name: "Dolgu",
+        icon: "🦷",
         description: "Çürük dişlerin restorasyonu için estetik ve dayanıklı dolgu uygulamaları.",
         price: "1.500 ₺'den",
       },
       {
         name: "Kanal Tedavisi",
+        icon: "🔬",
         description: "Enfekte diş sinirlerinin tedavisi ile dişinizi kurtarıyoruz.",
         price: "3.500 ₺'den",
       },
       {
         name: "İmplant",
+        icon: "⚕️",
         description: "Eksik dişleriniz için kalıcı ve doğal görünümlü implant çözümleri.",
         price: "15.000 ₺'den",
       },
       {
         name: "Diş Beyazlatma",
+        icon: "✨",
         description: "Profesyonel beyazlatma ile daha parlak ve sağlıklı bir gülüş.",
         price: "4.000 ₺'den",
       },
       {
         name: "Ortodonti",
+        icon: "😁",
         description: "Tel ve şeffaf plak tedavileri ile düzgün diş dizilimi.",
         price: "25.000 ₺'den",
       },
@@ -142,77 +156,98 @@ const dentalContent: SiteContent = {
 
 const psychologistContent: SiteContent = {
   hero: {
-    headline: "İçinizdeki Gücü Keşfedin",
+    headline: "İçinizdeki Gücü\nKeşfedin",
     subheadline:
-      "Güvenli ve yargısız bir ortamda bireysel ve çift terapisi hizmetleriyle yanınızdayız.",
-    ctaText: "Seans Talep Et",
-    ctaPhone: "0312 000 00 00",
+      "Güvenli ve destekleyici bir ortamda, yaşamınızın her alanında büyümenize eşlik ediyorum.",
+    ctaText: "Seans Ayarla",
+    ctaPhone: "05xx xxx xx xx",
+    heroImageUrl:
+      "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&q=80",
   },
   about: {
-    title: "Hakkımda",
-    body: "Klinik psikolog olarak bireylerin ve çiftlerin duygusal ihtiyaçlarını anlamalarına, sağlıklı başa çıkma stratejileri geliştirmelerine yardımcı oluyorum. Bilişsel davranışçı ve şema terapi yaklaşımlarını kullanıyorum.",
-    photoUrl: null,
+    title: "Sizinle Birlikte Büyüyorum",
+    body: "10 yılı aşkın deneyimimle bireysel terapi, çift terapisi ve grup seansları sunuyorum. Bilişsel davranışçı terapi ve mindfulness temelli yaklaşımlarla çalışıyorum.",
+    photoUrl:
+      "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=600&q=80",
   },
   services: {
-    title: "Terapi Alanları",
+    title: "Terapi Hizmetleri",
     items: [
       {
         name: "Bireysel Terapi",
-        description: "Kişisel gelişim, kaygı ve yaşam zorlukları için birebir destek.",
-        price: "1.200 ₺/seans",
+        icon: "🧠",
+        description: "Kaygı, depresyon, öz güven",
+        price: null,
       },
       {
         name: "Çift Terapisi",
-        description: "İlişki sorunları, iletişim ve güven konularında çiftlere özel destek.",
-        price: "1.500 ₺/seans",
+        icon: "💑",
+        description: "İletişim ve ilişki sorunları",
+        price: null,
       },
       {
         name: "Online Seans",
-        description: "Evden güvenle katılabileceğiniz online terapi seansları.",
-        price: "1.000 ₺/seans",
+        icon: "💻",
+        description: "Nerede olursan ol",
+        price: null,
       },
       {
-        name: "Anksiyete",
-        description: "Kaygı bozuklukları ve panik atak için kanıta dayalı tedavi.",
+        name: "Anksiyete Terapisi",
+        icon: "🌱",
+        description: "Panik atak, sosyal kaygı",
+        price: null,
       },
       {
-        name: "Depresyon",
-        description: "Depresif belirtilerin yönetimi ve iyileşme sürecinde destek.",
+        name: "Yas ve Kayıp",
+        icon: "🤝",
+        description: "Kayıp sonrası iyileşme",
+        price: null,
+      },
+      {
+        name: "Öfke Yönetimi",
+        icon: "⚖️",
+        description: "Duygusal düzenleme",
+        price: null,
       },
     ],
   },
   contact: {
     phone: "0312 000 00 00",
-    whatsapp: "905550000000",
-    email: "info@psikolog.com",
-    address: "Örnek Mah. Terapi Cad. No: 5",
-    city: "İstanbul",
-    workingHours: "Pzt–Cum 10:00–19:00",
+    whatsapp: "05550000000",
+    email: "psikolog@ornek.com",
+    address: "Çankaya, Ankara",
+    city: "Ankara",
+    workingHours: "Pzt-Cmt 09:00-19:00",
     mapEmbedUrl: null,
   },
   testimonials: {
     items: [
       {
-        name: "Ayşe D.",
-        text: "Terapi sürecimde kendimi çok güvende hissettim. Hayatıma bambaşka bir bakış açısı kazandırdı.",
+        name: "A. Yıldız",
+        text: "Terapiye başlamadan önce çok kararsızdım. Ama ilk seanstan itibaren kendimi güvende hissettim. Hayatım gerçekten değişti.",
         rating: 5,
       },
       {
-        name: "Can S.",
-        text: "Online seanslar çok pratikti. Eşimle birlikte aldığımız çift terapisi ilişkimizi güçlendirdi.",
+        name: "M. Demir",
+        text: "Çift terapisi ilişkimizi kurtardı. İletişimimiz çok daha sağlıklı artık.",
+        rating: 5,
+      },
+      {
+        name: "S. Kaya",
+        text: "Anksiyete ile baş etmeyi öğrendim. Artık panik ataklarım çok daha az.",
         rating: 5,
       },
     ],
   },
   appointment: {
-    title: "Seans Talebi",
+    title: "Seans Ayarla",
     description:
-      "İletişim bilgilerinizi bırakın, size en uygun seans saatini birlikte belirleyelim.",
+      "İlk görüşme ücretsizdir. Size en uygun seans saatini birlikte belirleyelim.",
   },
   meta: {
-    siteName: "Psikolog & Terapist",
-    tagline: "Duygusal sağlığınız için",
-    logoText: "Psikolog",
+    siteName: "Psk. Örnek İsim",
+    tagline: "Bireysel & Çift Terapisi",
+    logoText: "Psk. Örnek",
     primaryColor: "#8b5cf6",
     fontFamily: "Inter",
   },

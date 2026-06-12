@@ -6,6 +6,12 @@ interface ContactSectionProps {
   contact: SiteContent["contact"];
 }
 
+const cards = [
+  { key: "phone", title: "Telefon", icon: IconPhone, accentIcon: true },
+  { key: "whatsapp", title: "WhatsApp", icon: IconBrandWhatsapp, accentIcon: false },
+  { key: "address", title: "Adres", icon: IconMapPin, accentIcon: true },
+] as const;
+
 export function ContactSection({ contact }: ContactSectionProps) {
   const phoneHref = contact.phone
     ? `tel:${contact.phone.replace(/\s/g, "")}`
@@ -14,65 +20,70 @@ export function ContactSection({ contact }: ContactSectionProps) {
     ? formatWhatsAppUrl(contact.whatsapp)
     : undefined;
 
+  const values: Record<string, { text: string; href?: string }> = {
+    phone: { text: contact.phone, href: phoneHref },
+    whatsapp: { text: contact.whatsapp, href: whatsappHref },
+    address: {
+      text: [contact.address, contact.city].filter(Boolean).join(", "),
+    },
+  };
+
   return (
-    <section className="bg-gray-50 px-4 py-20 sm:px-6">
-      <div className="mx-auto max-w-site">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-          <div className="rounded-xl border border-gray-100 bg-white p-6 text-center">
-            <IconPhone
-              size={32}
-              className="mx-auto mb-4"
-              style={{ color: "var(--site-accent)" }}
-            />
-            <h3 className="mb-2 font-bold text-gray-900">Telefon</h3>
-            {phoneHref ? (
-              <a
-                href={phoneHref}
-                className="text-gray-600 hover:underline"
-              >
-                {contact.phone}
-              </a>
-            ) : (
-              <p className="text-gray-600">{contact.phone}</p>
-            )}
-          </div>
+    <section className="scroll-mt-20 bg-white px-6 py-section-y">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {cards.map((card) => {
+            const Icon = card.icon;
+            const value = values[card.key];
 
-          <div className="rounded-xl border border-gray-100 bg-white p-6 text-center">
-            <IconBrandWhatsapp
-              size={32}
-              className="mx-auto mb-4 text-green-500"
-            />
-            <h3 className="mb-2 font-bold text-gray-900">WhatsApp</h3>
-            {whatsappHref ? (
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:underline"
+            return (
+              <div
+                key={card.key}
+                className="rounded-2xl border border-slate-200 p-7 text-center transition-all duration-200 ease-in-out hover:border-[var(--site-accent)]"
               >
-                {contact.whatsapp}
-              </a>
-            ) : (
-              <p className="text-gray-600">{contact.whatsapp}</p>
-            )}
-          </div>
-
-          <div className="rounded-xl border border-gray-100 bg-white p-6 text-center">
-            <IconMapPin
-              size={32}
-              className="mx-auto mb-4"
-              style={{ color: "var(--site-accent)" }}
-            />
-            <h3 className="mb-2 font-bold text-gray-900">Adres</h3>
-            <p className="text-gray-600">
-              {contact.address}
-              {contact.city ? `, ${contact.city}` : ""}
-            </p>
-          </div>
+                <div
+                  className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-[14px]"
+                  style={{
+                    backgroundColor:
+                      "color-mix(in srgb, var(--site-accent) 10%, white)",
+                  }}
+                >
+                  <Icon
+                    size={24}
+                    className={
+                      card.key === "whatsapp" ? "text-green-500" : undefined
+                    }
+                    style={
+                      card.accentIcon
+                        ? { color: "var(--site-accent)" }
+                        : undefined
+                    }
+                  />
+                </div>
+                <h3 className="text-base font-bold text-slate-900">
+                  {card.title}
+                </h3>
+                {value.href ? (
+                  <a
+                    href={value.href}
+                    target={card.key === "whatsapp" ? "_blank" : undefined}
+                    rel={
+                      card.key === "whatsapp" ? "noopener noreferrer" : undefined
+                    }
+                    className="mt-2 inline-block text-[15px] text-slate-500 transition-colors duration-200 hover:text-[var(--site-accent)]"
+                  >
+                    {value.text}
+                  </a>
+                ) : (
+                  <p className="mt-2 text-[15px] text-slate-500">{value.text}</p>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {contact.mapEmbedUrl && (
-          <div className="mt-8 overflow-hidden rounded-xl">
+          <div className="mt-10 overflow-hidden rounded-2xl">
             <iframe
               src={contact.mapEmbedUrl}
               width="100%"

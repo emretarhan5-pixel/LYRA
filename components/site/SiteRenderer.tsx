@@ -73,9 +73,18 @@ export function SiteRenderer({ site, template }: SiteRendererProps) {
   return (
     <div className="scroll-smooth bg-white">
       <SiteTracker siteId={site.id} />
-      <SiteHeader logoText={content.meta.logoText} ctaText={content.hero.ctaText} />
+      <SiteHeader
+        logoText={content.meta.logoText}
+        ctaText={content.hero.ctaText}
+        phone={content.contact.phone}
+      />
       {template.sections.map((section) => renderSection(section))}
-      <SiteFooter siteName={content.meta.siteName} logoText={content.meta.logoText} />
+      <SiteFooter
+        siteName={content.meta.siteName}
+        logoText={content.meta.logoText}
+        tagline={content.meta.tagline}
+        contact={content.contact}
+      />
       <SiteWhatsAppButton phone={content.contact.whatsapp} />
     </div>
   );

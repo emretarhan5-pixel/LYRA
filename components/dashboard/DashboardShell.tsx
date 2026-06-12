@@ -20,7 +20,7 @@ export function DashboardShell({ profile, children }: DashboardShellProps) {
   return (
     <div className="flex min-h-screen">
       <Sidebar profile={profile} />
-      <main className="flex-1 bg-lyra-dashboard-bg">{children}</main>
+      <main className="flex-1 bg-[#fafafa]">{children}</main>
     </div>
   );
 }

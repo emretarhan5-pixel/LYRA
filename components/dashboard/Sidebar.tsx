@@ -6,7 +6,7 @@ import {
   IconLayoutGrid,
   IconTemplate,
   IconCreditCard,
-  IconSettings,
+  IconSettings2,
   IconLogout,
 } from "@tabler/icons-react";
 import { createClient } from "@/lib/supabase/client";
@@ -18,11 +18,26 @@ const navItems = [
   { href: "/dashboard", label: "Sitelerim", icon: IconLayoutGrid },
   { href: "/dashboard/templates", label: "Şablonlar", icon: IconTemplate },
   { href: "/dashboard/billing", label: "Abonelik", icon: IconCreditCard },
-  { href: "/dashboard/settings", label: "Ayarlar", icon: IconSettings },
+  { href: "/dashboard/settings", label: "Ayarlar", icon: IconSettings2 },
 ];
 
 interface SidebarProps {
   profile: Profile | null;
+}
+
+function PlanBadge({ plan }: { plan: Profile["plan"] }) {
+  const isPro = plan === "pro" || plan === "agency";
+
+  return (
+    <span
+      className={cn(
+        "shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium",
+        isPro ? "bg-[#f0fdf4] text-[#16a34a]" : "bg-[#fafafa] text-[#94a3b8]"
+      )}
+    >
+      {isPro ? "Pro" : "Free"}
+    </span>
+  );
 }
 
 export function Sidebar({ profile }: SidebarProps) {
@@ -37,56 +52,72 @@ export function Sidebar({ profile }: SidebarProps) {
   }
 
   return (
-    <aside className="flex h-screen w-60 shrink-0 flex-col border-r border-sidebar-border bg-lyra-bg">
-      <div className="px-5 py-6">
-        <Link href="/dashboard" className="text-lg italic text-lyra-accent">
-          lyra
-        </Link>
+    <aside className="sticky top-0 flex h-screen w-[220px] shrink-0 flex-col border-r border-[#f0f0f0] bg-white">
+      <div className="shrink-0">
+        <div className="px-4 pb-3 pt-5">
+          <Link href="/dashboard" className="inline-flex items-center gap-2">
+            <span className="text-base font-bold tracking-[-0.5px] text-[#0f172a]">
+              lyra
+            </span>
+            <span className="rounded bg-[#f1f5f9] px-1.5 py-0.5 text-[10px] font-medium text-[#64748b]">
+              beta
+            </span>
+          </Link>
+        </div>
+
+        <div className="mb-2 px-4">
+          <div className="flex items-center gap-2.5 rounded-lg p-2 transition-colors hover:bg-[#f8fafc]">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#0f172a] text-[11px] font-medium text-white">
+              {getInitials(profile?.full_name)}
+            </div>
+            <p className="min-w-0 flex-1 truncate text-[13px] font-medium text-[#0f172a]">
+              {profile?.full_name ?? "Kullanıcı"}
+            </p>
+            <PlanBadge plan={profile?.plan ?? "free"} />
+          </div>
+        </div>
+
+        <div className="mx-4 mb-2 h-px bg-[#f0f0f0]" />
       </div>
 
-      <div className="flex items-center gap-3 px-5 pb-6">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-lyra-surface text-sm font-medium text-lyra-text-primary">
-          {getInitials(profile?.full_name)}
-        </div>
-        <div className="min-w-0">
-          <p className="truncate text-sm font-medium text-lyra-text-primary">
-            {profile?.full_name ?? "Kullanıcı"}
-          </p>
-        </div>
-      </div>
+      <nav className="min-h-0 flex-1 overflow-y-auto px-4 py-1">
+        <div className="flex flex-col py-0.5">
+          {navItems.map((item) => {
+            const isActive =
+              item.href === "/dashboard"
+                ? pathname === "/dashboard"
+                : pathname.startsWith(item.href);
+            const Icon = item.icon;
 
-      <nav className="flex flex-1 flex-col gap-1 px-3">
-        {navItems.map((item) => {
-          const isActive =
-            item.href === "/dashboard"
-              ? pathname === "/dashboard"
-              : pathname.startsWith(item.href);
-          const Icon = item.icon;
-
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 rounded-button px-3 py-2 text-sm transition-colors",
-                isActive
-                  ? "bg-white/8 text-lyra-text-primary"
-                  : "text-lyra-text-secondary hover:bg-white/5 hover:text-lyra-text-primary"
-              )}
-            >
-              <Icon size={18} stroke={1.5} />
-              {item.label}
-            </Link>
-          );
-        })}
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "flex items-center gap-2.5 rounded-[7px] px-2.5 py-[7px] text-[13px] transition-colors",
+                  isActive
+                    ? "bg-[#f8fafc] font-medium text-[#0f172a]"
+                    : "font-[450] text-[#64748b] hover:bg-[#f8fafc] hover:text-[#0f172a]"
+                )}
+              >
+                <Icon
+                  size={15}
+                  stroke={1.75}
+                  className={isActive ? "text-[#0f172a]" : "text-[#64748b]"}
+                />
+                {item.label}
+              </Link>
+            );
+          })}
+        </div>
       </nav>
 
-      <div className="border-t border-sidebar-border p-3">
+      <div className="mt-auto shrink-0 border-t border-[#f0f0f0] p-4">
         <button
           onClick={handleLogout}
-          className="flex w-full items-center gap-3 rounded-button px-3 py-2 text-sm text-lyra-text-secondary transition-colors hover:bg-white/5 hover:text-lyra-text-primary"
+          className="flex w-full items-center gap-2 rounded-[7px] px-2.5 py-2 text-[13px] text-[#94a3b8] transition-colors hover:bg-[#f8fafc] hover:text-[#ef4444]"
         >
-          <IconLogout size={18} stroke={1.5} />
+          <IconLogout size={15} stroke={1.75} />
           Çıkış
         </button>
       </div>
